@@ -43,7 +43,7 @@
 </script>
 
 <head>
-    <title>Kiku</title>
+    <title>ocebs live</title>
     <meta name="description" content="Website for getting the current oce beat sabers live sessions">
     
     <!-- Open Graph / Facebook -->
