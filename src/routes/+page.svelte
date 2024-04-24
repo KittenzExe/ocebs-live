@@ -44,19 +44,19 @@
 
 <head>
     <title>ocebs live</title>
-    <meta name="description" content="Website for getting the current oce beat sabers live sessions">
+    <meta name="description" content="Website for getting the current oce beat saber live sessions">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ocebs.kittenzexe.com/">
     <meta property="og:title" content="ocebs live">
-    <meta property="og:description" content="Website for getting the current oce beat sabers live sessions">
+    <meta property="og:description" content="Website for getting the current oce beat saber live sessions">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://ocebs.kittenzexe.com/">
     <meta property="twitter:title" content="ocebs live">
-    <meta property="twitter:description" content="Website for getting the current oce beat sabers live sessions">
+    <meta property="twitter:description" content="Website for getting the current oce beat saber live sessions">
 
     <meta name="theme-color" content="#7d77d7">
 </head>
