@@ -72,77 +72,79 @@
         </div>
     </div>
     <div class="w-5/6 flex flex-col gap-3">
-        {#each users as user (user.id)}
-            {#if user['beat-saber_status'].state === 'Main Menu'}
-                <div class="w-full h-20 flex justify-center items-center rounded-full overflow-hidden relative">
-                    <div class="absolute inset-0" style="background: url('{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
-                    <div class="w-2/3 h-16 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
-                        <img src="{user.avatar_url}" alt="" class="h-full rounded-xl">
-                        <img src="{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl">
-                        <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-between">
-                            <div class="w-3/5">
-                                <p>{user.username} is in the Main Menu</p>
-                                <p>Time Elapsed: {Math.floor(user['beat-saber_status'].time_elapsed / 60)}:{user['beat-saber_status'].time_elapsed % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_elapsed % 60}</p>
-                            </div>
-                            <div class="w-1/5 flex gap-x-2 mr-2 justify-end">
-                                <a href="https://oce-api.kittenzexe.com/v1/{user.uid}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-md flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-api" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M4 13h5" />
-                                        <path d="M12 16v-8h3a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-3" />
-                                        <path d="M20 8v8" />
-                                        <path d="M9 16v-5.5a2.5 2.5 0 0 0 -5 0v5.5" />
-                                    </svg>
-                                </a>
+        {#if users.length === 0}
+            <div class="w-full h-20 flex justify-center items-center rounded-full overflow-hidden relative">
+                <div class="absolute inset-0" style="background: url('https://cdn.discordapp.com/app-assets/1028340906740420711/1056826167933546576.png') no-repeat center/cover; filter: blur(10px)"></div>
+                <div class="w-2/3 h-16 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
+                    <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-center items-center">
+                        <p>No-one is playing right now</p>
+                    </div>
+                </div>
+            </div>
+        {:else}
+            {#each users as user (user.id)}
+                {#if user['beat-saber_status'].state === 'Main Menu'}
+                    <div class="w-full h-20 flex justify-center items-center rounded-full overflow-hidden relative">
+                        <div class="absolute inset-0" style="background: url('{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
+                        <div class="w-2/3 h-16 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
+                            <img src="{user.avatar_url}" alt="" class="h-full rounded-xl">
+                            <img src="{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl">
+                            <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-between">
+                                <div class="w-3/5">
+                                    <p>{user.username} is in the Main Menu</p>
+                                    <p>Time Elapsed: {Math.floor(user['beat-saber_status'].time_elapsed / 60)}:{user['beat-saber_status'].time_elapsed % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_elapsed % 60}</p>
+                                </div>
+                                <div class="w-1/5 flex gap-x-2 mr-2 justify-end">
+                                    <a href="https://oce-api.kittenzexe.com/v1/{user.uid}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-md flex justify-center items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-api" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M4 13h5" />
+                                            <path d="M12 16v-8h3a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-3" />
+                                            <path d="M20 8v8" />
+                                            <path d="M9 16v-5.5a2.5 2.5 0 0 0 -5 0v5.5" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {:else if user['beat-saber_status'].time_elapsed === null}
-                <div class="w-full h-32 flex justify-center items-center rounded-full overflow-hidden relative">
-                    <div class="absolute inset-0" style="background: url('https://cdn.beatsaver.com{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
-                    <div class="w-2/3 h-28 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
-                        <img src="{user.avatar_url}" alt="" class="h-full rounded-xl">
-                        <img src="https://cdn.beatsaver.com{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl">
-                        <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-between">
-                            <div class="w-4/5">
-                                <p>{user.username} is playing: {user['beat-saber_status'].details}</p>
-                                <p>{user['beat-saber_status'].state}</p>
-                                <p>Time Left: {Math.floor(user['beat-saber_status'].time_left / 60)}:{user['beat-saber_status'].time_left % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_left % 60}</p>
-                            </div>
-                            <div class="w-1/5 flex gap-x-2 mr-2 justify-end">
-                                <a href="https://beatsaver.com/maps/{user['beat-saber_status'].small_image_text.split('!bsr ')[1]}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-md flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
-                                        <path d="M11 13l9 -9" />
-                                        <path d="M15 4h5v5" />
-                                    </svg>
-                                </a>
-                                <a href="https://oce-api.kittenzexe.com/v1/{user.uid}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-md flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-api" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M4 13h5" />
-                                        <path d="M12 16v-8h3a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-3" />
-                                        <path d="M20 8v8" />
-                                        <path d="M9 16v-5.5a2.5 2.5 0 0 0 -5 0v5.5" />
-                                    </svg>
-                                </a>
+                {:else if user['beat-saber_status'].time_elapsed === null}
+                    <div class="w-full h-32 flex justify-center items-center rounded-full overflow-hidden relative">
+                        <div class="absolute inset-0" style="background: url('https://cdn.beatsaver.com{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
+                        <div class="w-2/3 h-28 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
+                            <img src="{user.avatar_url}" alt="" class="h-full rounded-xl">
+                            <img src="https://cdn.beatsaver.com{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl">
+                            <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-between">
+                                <div class="w-4/5">
+                                    <p>{user.username} is playing: {user['beat-saber_status'].details}</p>
+                                    <p>{user['beat-saber_status'].state}</p>
+                                    <p>Time Left: {Math.floor(user['beat-saber_status'].time_left / 60)}:{user['beat-saber_status'].time_left % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_left % 60}</p>
+                                </div>
+                                <div class="w-1/5 flex gap-x-2 mr-2 justify-end">
+                                    <a href="https://beatsaver.com/maps/{user['beat-saber_status'].small_image_text.split('!bsr ')[1]}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-md flex justify-center items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
+                                            <path d="M11 13l9 -9" />
+                                            <path d="M15 4h5v5" />
+                                        </svg>
+                                    </a>
+                                    <a href="https://oce-api.kittenzexe.com/v1/{user.uid}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-md flex justify-center items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-api" width="50" height="50" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M4 13h5" />
+                                            <path d="M12 16v-8h3a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-3" />
+                                            <path d="M20 8v8" />
+                                            <path d="M9 16v-5.5a2.5 2.5 0 0 0 -5 0v5.5" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {:else}
-                <div class="w-full h-20 flex justify-center items-center rounded-full overflow-hidden relative">
-                    <div class="absolute inset-0" style="background: url('https://cdn.discordapp.com/app-assets/1028340906740420711/1056826167933546576.png') no-repeat center/cover; filter: blur(10px)"></div>
-                    <div class="w-2/3 h-16 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
-                        <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-center items-center">
-                            <p>No-one is playing right now</p>
-                        </div>
-                    </div>
-                </div>
-            {/if}
-        {/each}
+                {/if}
+            {/each}
+        {/if}
     </div>
     <div class="w-1/3 h-8 mt-3 bg-zinc-900 text-zinc-50 text-sm flex justify-center items-center rounded-full">
         <p>Created by <a href="https://kittenzexe.com" target="_blank" class="text-[#7d77d7]">KittenzExe</a> for the oce beat saber discord server. Powered by <a href="https://kiku.kittenzexe.com" target="_blank" class="text-[#7d77d7]">Kiku</a></p>
