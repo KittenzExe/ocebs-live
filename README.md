@@ -30,6 +30,6 @@ You are free to use the api as you like. As mentioned above, ocebs live uses the
 
 - [x] Mobile support 😭
 - [ ] Discord roles showing (e.g. top 10, location, ect.)
-- [ ] Discord user color
+- [x] Discord user color
 - [ ] Discord voice call grouping (grouping people who are playing Beat Saber in general)
 - [ ] Twitch live streaming show
