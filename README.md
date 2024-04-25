@@ -6,7 +6,7 @@
 
 ## Setup
 
-- use `/register` followed by your prefered leaderboard platform user url in `url` 
+- use `/register` followed by your preferred leaderboard platform user url in `url` 
 - And you're all done! If you are playing Beat Saber, you should see yourself playing over at https://ocebs.kittenzexe.com
 
 ## API
@@ -26,3 +26,4 @@ You are free to use the api as you like. As mentioned above, ocebs live uses the
 - [ ] Discord user color
 - [ ] Discord voice call grouping (grouping people who are playing Beat Saber in general)
 - [ ] Mobile support 😭
+- [ ] Twitch live streaming show
