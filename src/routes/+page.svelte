@@ -22,8 +22,16 @@
                 if (user['beat-saber_status'] && user['beat-saber_status'].large_image && user['beat-saber_status'].large_image.includes('cdn.beatsaver.com')) {
                     const parts = user['beat-saber_status'].large_image.split('cdn.beatsaver.com');
                     user['beat-saber_status'].large_image = parts[parts.length - 1].replace('.png', '');
-                    console.log('Updated user:', user);
                 }
+
+                // Convert role_color from hexadecimal number to CSS hex color code
+                let hexColor = user.role_color.toString(16);
+                while (hexColor.length < 6) {
+                    hexColor = '0' + hexColor;
+                }
+                user.role_color = '#' + hexColor;
+
+                console.log('Updated user:', user);
             });
         };
 
@@ -85,7 +93,7 @@
                         <img src="https://cdn.beatsaver.com{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl lg:block hidden">
                             <div class="flex justify-between w-full">
                                 <div class="pt-2 pb-2 text-zinc-50">
-                                    <p>{user.username} is in the Main Menu</p>
+                                    <p><span style="color: {user.role_color};">{user.username}</span> is in the Main Menu</p>
                                     <p>Time Elapsed: {Math.floor(user['beat-saber_status'].time_elapsed / 60)}:{user['beat-saber_status'].time_elapsed % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_elapsed % 60}</p>
                                 </div>
                                 <div class="flex flex-col gap-x-2 m-2 justify-end">
@@ -121,8 +129,8 @@
                             </div>
                             <div class="flex justify-between w-full">
                                 <div class="pt-2 pb-2 text-zinc-50">
-                                    <p>{user.username} is playing: {user['beat-saber_status'].details}</p>
-                                    <p>{user['beat-saber_status'].state}</p>
+                                    <p><span style="color: {user.role_color};">{user.username}</span> is playing: {user['beat-saber_status'].details}</p>
+                                    <p >{user['beat-saber_status'].state}</p>
                                     <p>Time Left: {Math.floor(user['beat-saber_status'].time_left / 60)}:{user['beat-saber_status'].time_left % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_left % 60}</p>
                                 </div>
                                 <div class="flex flex-col gap-x-2 m-2 justify-end">
@@ -163,7 +171,7 @@
                             <img src="{user.avatar_url}" alt="" class="h-full rounded-xl md:block hidden">
                             <div class="flex justify-between w-full">
                                 <div class="pt-2 pb-2 text-zinc-50">
-                                    <p>{user.username} is playing but no data can be found.</p>
+                                    <p><span style="color: {user.role_color};">{user.username}</span> is playing but no data can be found.</p>
                                     <p>Time Elapsed: {Math.floor(user['beat-saber_status'].time_elapsed / 60)}:{user['beat-saber_status'].time_elapsed % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_elapsed % 60}</p>
                                 </div>
                                 <div class="flex flex-col gap-x-2 m-2 justify-end">
