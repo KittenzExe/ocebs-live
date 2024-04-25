@@ -13,6 +13,7 @@
                 const responseData = JSON.parse(event.data);
                 console.log('Parsed data:', responseData);
                 users = responseData.filter((user: any) => user['beat-saber_status'] && user['beat-saber_status'] !== 'Not playing Beat Saber');
+                users = users.filter(user => user['beat-saber_status'] && user['beat-saber_status'].large_image !== null);
             } else {
                 console.error('Received non-JSON data:', event.data);
             }
