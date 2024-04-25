@@ -3,36 +3,39 @@
 
     let users: any[] = [];
     let ws: WebSocket;
+    let highestTimeLeft = 0;
 
     onMount(() => {
         ws = new WebSocket('wss://oce-api.kittenzexe.com/v1/0');
 
         ws.onmessage = (event) => {
-            //console.log('Raw data:', event.data);
             if (event.data && (event.data.startsWith('{') || event.data.startsWith('['))) {
                 const responseData = JSON.parse(event.data);
-                console.log('Parsed data:', responseData);
                 users = responseData.filter((user: any) => user['beat-saber_status'] && user['beat-saber_status'] !== 'Not playing Beat Saber');
                 users = users.filter(user => user['beat-saber_status']);
+
+                users.forEach(user => {
+                    if (user['beat-saber_status'] && user['beat-saber_status'].large_image && user['beat-saber_status'].large_image.includes('cdn.beatsaver.com')) {
+                        const parts = user['beat-saber_status'].large_image.split('cdn.beatsaver.com');
+                        user['beat-saber_status'].large_image = parts[parts.length - 1].replace('.png', '');
+                    }
+
+                    let hexColor = user.role_color.toString(16);
+                    while (hexColor.length < 6) {
+                        hexColor = '0' + hexColor;
+                    }
+                    user.role_color = '#' + hexColor;
+
+                    if (user['beat-saber_status'].time_elapsed === null && user['beat-saber_status'].time_left > highestTimeLeft) {
+                        highestTimeLeft = user['beat-saber_status'].time_left;
+                    }
+                    user.timeLeftPercentage = highestTimeLeft > 0 ? (user['beat-saber_status'].time_left / highestTimeLeft) * 100 : 0;
+
+                    console.log('Updated user:', user);
+                });
             } else {
                 console.error('Received non-JSON data:', event.data);
             }
-
-            users.forEach(user => {
-                if (user['beat-saber_status'] && user['beat-saber_status'].large_image && user['beat-saber_status'].large_image.includes('cdn.beatsaver.com')) {
-                    const parts = user['beat-saber_status'].large_image.split('cdn.beatsaver.com');
-                    user['beat-saber_status'].large_image = parts[parts.length - 1].replace('.png', '');
-                }
-
-                // Convert role_color from hexadecimal number to CSS hex color code
-                let hexColor = user.role_color.toString(16);
-                while (hexColor.length < 6) {
-                    hexColor = '0' + hexColor;
-                }
-                user.role_color = '#' + hexColor;
-
-                console.log('Updated user:', user);
-            });
         };
 
         onDestroy(() => {
@@ -76,8 +79,8 @@
     <div class="w-full xl:w-5/6 flex flex-col gap-3">
         {#if users.length === 0}
             <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative">
-                <div class="absolute inset-0" style="background: url('https://cdn.discordapp.com/app-assets/1028340906740420711/1056826167933546576.png') no-repeat center/cover; filter: blur(10px)"></div>
-                <div class="w-4/5 h-20 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative">
+                <div class="absolute inset-0 shadow-inner" style="background: url('https://cdn.discordapp.com/app-assets/1028340906740420711/1056826167933546576.png') no-repeat center/cover; filter: blur(10px)"></div>
+                <div class="w-4/5 h-20 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative shadow-lg">
                     <div class="h-full w-full pt-2 pb-2 text-zinc-50 flex justify-center items-center">
                         <p>No-one is playing right now</p>
                     </div>
@@ -86,9 +89,9 @@
         {:else}
             {#each users as user (user.id)}
                 {#if user['beat-saber_status'].state === 'Main Menu'}
-                <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative">
-                    <div class="absolute inset-0" style="background: url('{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
-                    <div class="w-4/5 h-20 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative pl-2 xl:pl-0">
+                <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative" style="box-shadow: 0 4px 2px -2px {user.role_color};">
+                    <div class="absolute inset-0 shadow-inner" style="background: url('{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
+                    <div class="w-4/5 h-20 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative pl-2 xl:pl-0 shadow-lg">
                         <img src="{user.avatar_url}" alt="" class="h-full rounded-xl md:block hidden">
                         <img src="https://cdn.beatsaver.com{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl lg:block hidden">
                             <div class="flex justify-between w-full">
@@ -120,9 +123,9 @@
                         </div>
                     </div>
                 {:else if user['beat-saber_status'].time_elapsed === null}
-                    <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative">
-                        <div class="absolute inset-0" style="background: url('https://cdn.beatsaver.com{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
-                        <div class="w-4/5 h-auto flex bg-zinc-900 rounded-xl overflow-hidden gap-x-3 relative pl-2 xl:pl-0">
+                    <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative" style="box-shadow: 0 4px 2px -2px {user.role_color};">
+                        <div class="absolute inset-0 shadow-inner" style="background: url('https://cdn.beatsaver.com{user['beat-saber_status'].large_image}') no-repeat center/cover; filter: blur(10px)"></div>
+                        <div class="w-4/5 h-auto flex bg-zinc-900 rounded-xl overflow-hidden gap-x-3 relative pl-2 xl:pl-0 shadow-lg">
                             <div class="flex gap-x-3 max-h-28 max-w-28 lg:max-w-60">
                                 <img src="{user.avatar_url}" alt="" class="h-full rounded-xl md:block hidden">
                                 <img src="https://cdn.beatsaver.com{user['beat-saber_status'].large_image}" alt="" class="h-full rounded-xl lg:block hidden">
@@ -130,8 +133,11 @@
                             <div class="flex justify-between w-full">
                                 <div class="pt-2 pb-2 text-zinc-50">
                                     <p><span style="color: {user.role_color};">{user.username}</span> is playing: {user['beat-saber_status'].details}</p>
-                                    <p >{user['beat-saber_status'].state}</p>
+                                    <p>{user['beat-saber_status'].state}</p>
                                     <p>Time Left: {Math.floor(user['beat-saber_status'].time_left / 60)}:{user['beat-saber_status'].time_left % 60 < 10 ? '0' : ''}{user['beat-saber_status'].time_left % 60}</p>
+                                    <div class="w-full h-4 bg-zinc-800 rounded-full overflow-hidden">
+                                        <div class="transition-all ease-in-out duration-200 h-4 bg-zinc-50 rounded-full" style="width: {user.timeLeftPercentage}%;"></div>
+                                    </div>
                                 </div>
                                 <div class="flex flex-col gap-x-2 m-2 justify-end">
                                     <a href="{user.url}" target="_blank" class="h-full w-16 bg-zinc-800 rounded-t-md flex justify-center items-center">
@@ -165,9 +171,9 @@
                         </div>
                     </div>
                 {:else if user['beat-saber_status'].state === null}
-                    <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative">
-                        <div class="absolute inset-0" style="background: url('{user.avatar_url}') no-repeat center/cover; filter: blur(10px)"></div>
-                        <div class="w-4/5 h-28 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative pl-2 xl:pl-0">
+                    <div class="w-full min-h-28 p-2 flex justify-center items-center rounded-2xl overflow-hidden relative" style="box-shadow: 0 4px 2px -2px {user.role_color};">
+                        <div class="absolute inset-0 shadow-inner" style="background: url('{user.avatar_url}') no-repeat center/cover; filter: blur(10px)"></div>
+                        <div class="w-4/5 h-28 bg-zinc-900 rounded-xl flex overflow-hidden gap-x-3 relative pl-2 xl:pl-0 shadow-lg">
                             <img src="{user.avatar_url}" alt="" class="h-full rounded-xl md:block hidden">
                             <div class="flex justify-between w-full">
                                 <div class="pt-2 pb-2 text-zinc-50">
@@ -212,6 +218,8 @@
         <p>UID: {user.uid}</p>
         <p>Username: {user.username}</p>
         <p>Avatar URL: {user.avatar_url}</p>
+        <p>Role Color: {user.role_color}</p>
+        <p>URL: {user.url}</p>
         {#if typeof user['beat-saber_status'] === 'object' && user['beat-saber_status'] !== null}
             <p>State: {user['beat-saber_status'].state}</p>
             <p>Details: {user['beat-saber_status'].details}</p>
