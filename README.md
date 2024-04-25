@@ -14,6 +14,9 @@
 
 ## API
 
+> [!NOTE]
+> With the large data being transfered, at the moment the API updates every `2 seconds`. Will try to drop it down to `1 second`.
+
 ocebs live uses the same API as [Kiku](https://github.com/KittenzExe/kiku)
 
 - https://oce-api.kittenzexe.com/v1/your_user_id
@@ -25,8 +28,8 @@ You are free to use the api as you like. As mentioned above, ocebs live uses the
 
 ## Roadmap
 
+- [x] Mobile support 😭
 - [ ] Discord roles showing (e.g. top 10, location, ect.)
 - [ ] Discord user color
 - [ ] Discord voice call grouping (grouping people who are playing Beat Saber in general)
-- [ ] Mobile support 😭
 - [ ] Twitch live streaming show
