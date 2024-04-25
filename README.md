@@ -7,7 +7,7 @@
 ## Setup
 
 > [!IMPORTANT]
-> You will need [bsrpc](https://github.com/DJDavid98/bsrpc) to see your data!
+> You will need [bsrpc](https://github.com/DJDavid98/bsrpc) to see your data! You can use it without but there wont be any data.
 
 - use `/register` followed by your preferred leaderboard platform user url in `url` 
 - And you're all done! If you are playing Beat Saber, you should see yourself playing over at https://ocebs.kittenzexe.com
