@@ -33,3 +33,4 @@ You are free to use the api as you like. As mentioned above, ocebs live uses the
 - [x] Discord user color
 - [ ] Discord voice call grouping (grouping people who are playing Beat Saber in general)
 - [ ] Twitch live streaming show
+- [ ] Beat Saber mod integration
